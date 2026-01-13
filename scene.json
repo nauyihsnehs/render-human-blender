@@ -1,0 +1,427 @@
+[
+  {
+    "scene_id": 0,
+    "scene_blend_path": "E:\\evermotion\\Archexteriors Vol.38-3.6\\AE38_001_Blender\\AE38_001.blend",
+    "output_path": "E:\\evermotion\\Archexteriors Vol.38-3.6\\AE38_001_Blender\\render",
+    "floor_object_names": [
+      "AE38_001_pavement_tiles",
+      "AE38_001_pavement_tiles_base"
+    ],
+    "floor_object_name": "render_floor_full"
+  },
+  {
+    "scene_id": 1,
+    "scene_blend_path": "E:\\evermotion\\Archexteriors Vol.38-3.6\\AE38_002_Blender\\AE38_002_Blender.blend",
+    "output_path": "E:\\evermotion\\Archexteriors Vol.38-3.6\\AE38_002_Blender\\render",
+    "floor_object_names": [
+      "AE38_002_tiles floor_001",
+      "AE38_002_ground_001"
+    ],
+    "floor_object_name": "render_floor_full"
+  },
+  {
+    "scene_id": 2,
+    "scene_blend_path": "E:\\evermotion\\Archexteriors Vol.38-3.6\\AE38_003_Blender\\AE38_003.blend",
+    "output_path": "E:\\evermotion\\Archexteriors Vol.38-3.6\\AE38_003_Blender\\render",
+    "floor_object_names": [
+      "AE38_003_Stone road_000",
+      "AE38_003_Floor Interior_000"
+    ],
+    "floor_object_name": "render_floor_full"
+  },
+  {
+    "scene_id": 3,
+    "scene_blend_path": "E:\\evermotion\\Archexteriors Vol.38-3.6\\AE38_004_Blender\\AE38_004.blend",
+    "output_path": "E:\\evermotion\\Archexteriors Vol.38-3.6\\AE38_004_Blender\\render",
+    "floor_object_names": [
+      "AE38_004_Cobble_Ground_A",
+      "AE38_004_Cobble_Ground_B",
+      "AE38_004_Cobble_Ground_C",
+      "AE38_004_Cobble_Ground_D",
+      "AE38_004_Cobble_Moss_A",
+      "AE38_004_Concrete_Block_A",
+      "AE38_004_drain_sewer_A",
+      "AE38_004_cobble_moss_A",
+      "AE38_004_cobble_moss_A001"
+    ],
+    "floor_object_name": "render_floor_full"
+  },
+  {
+    "scene_id": 4,
+    "scene_blend_path": "E:\\evermotion\\Archexteriors Vol.38-3.6\\AE38_005_Blender\\AE38_005_Blender.blend",
+    "output_path": "E:\\evermotion\\Archexteriors Vol.38-3.6\\AE38_005_Blender\\render",
+    "floor_object_names": [
+      "AE38_005_Steet_Concrete_Slab_A_001",
+      "AE38_005_Steet_Concrete_Slab_A_002",
+      "AE38_005_Steet_Concrete_Slab_A_003",
+      "AE38_005_Steet_Concrete_Slab_A_004",
+      "AE38_005_Steet_Concrete_Slab_A_005",
+      "AE38_005_Steet_Concrete_Slab_A_006",
+      "AE38_005_Steet_Concrete_Slab_A_007",
+      "AE38_005_Steet_Concrete_Slab_A_008",
+      "AE38_005_Steet_Concrete_Slab_A_009",
+      "AE38_005_Steet_Concrete_Slab_A_010",
+      "AE38_005_Steet_Concrete_Slab_A_011",
+      "AE38_005_Steet_Concrete_Slab_A_012",
+      "AE38_005_Steet_Concrete_Slab_A_013",
+      "AE38_005_Steet_Pavement_A_001",
+      "AE38_005_Steet_Pavement_A_002",
+      "AE38_005_Steet_Pavement_A_003",
+      "AE38_005_Steet_Pavement_A_004",
+      "AE38_005_Steet_Pavement_A_005",
+      "AE38_005_Steet_Pavement_A_006",
+      "AE38_005_Steet_Pavement_A_007",
+      "AE38_005_Steet_Pavement_A_008",
+      "AE38_005_Steet_Pavement_A_009",
+      "AE38_005_Steet_Pavement_A_010",
+      "AE38_005_Steet_Road_A_001",
+      "AE38_005_Steet_Road_A_002",
+      "AE38_005_Steet_Road_A_003",
+      "AE38_005_Steet_Road_A_004",
+      "AE38_005_Steet_Road_A_005",
+      "AE38_005_Steet_Road_A_006",
+      "AE38_005_Steet_Road_A_007",
+      "AE38_005_Steet_Road_A_008",
+      "AE38_005_Steet_Road_A_009",
+      "AE38_005_Steet_Road_A_010"
+    ],
+    "floor_object_name": "render_floor_full"
+  },
+  {
+    "scene_id": 5,
+    "scene_blend_path": "E:\\evermotion\\Archexteriors Vol.38-3.6\\AE38_006_Blender\\AE38_006.blend",
+    "output_path": "E:\\evermotion\\Archexteriors Vol.38-3.6\\AE38_006_Blender\\render",
+    "floor_object_names": [
+      "AE38_006_floor_A",
+      "AE38_006_floor_B",
+      "AE38_006_ground_A",
+      "AE38_006_ground_B",
+      "AE38_006_puddles_A"
+    ],
+    "floor_object_name": "render_floor_full"
+  },
+  {
+    "scene_id": 6,
+    "scene_blend_path": "E:\\evermotion\\Archexteriors Vol.38-3.6\\AE38_007_Blender\\AE38_007.blend",
+    "output_path": "E:\\evermotion\\Archexteriors Vol.38-3.6\\AE38_007_Blender\\render",
+    "floor_object_names": [
+      "AE38_007_planks",
+      "AE38_007_soil_A",
+      "AE38_007_soil_B001",
+      "AE38_007_soil_B002"
+    ],
+    "floor_object_name": "render_floor_full"
+  },
+  {
+    "scene_id": 7,
+    "scene_blend_path": "E:\\evermotion\\Archexteriors Vol.38-3.6\\AE38_008_Blender\\AE38_008.blend",
+    "output_path": "E:\\evermotion\\Archexteriors Vol.38-3.6\\AE38_008_Blender\\render",
+    "floor_object_names": [
+      "AE38_008_floor_001",
+      "AE38_008_floor_002"
+    ],
+    "floor_object_name": "render_floor_full"
+  },
+  {
+    "scene_id": 8,
+    "scene_blend_path": "E:\\evermotion\\Archexteriors Vol.38-3.6\\AE38_009_Blender\\AE38_009.blend",
+    "output_path": "E:\\evermotion\\Archexteriors Vol.38-3.6\\AE38_009_Blender\\render",
+    "floor_object_names": [
+      "AE38_009_BrickFloor1",
+      "AE38_009_BrickFloor2",
+      "AE38_009_Floor3"
+    ],
+    "floor_object_name": "render_floor_full"
+  },
+  {
+    "scene_id": 9,
+    "scene_blend_path": "E:\\evermotion\\Archexteriors Vol.38-3.6\\AE38_010_Blender\\AE38_010.blend",
+    "output_path": "E:\\evermotion\\Archexteriors Vol.38-3.6\\AE38_010_Blender\\render",
+    "floor_object_names": [
+      "AE38_010_pavement",
+      "AE38_010_pavement_disp"
+    ],
+    "floor_object_name": "render_floor_full"
+  },
+  {
+    "scene_id": 10,
+    "scene_blend_path": "E:\\evermotion\\Archinteriors Vol.48-3.6\\AI48_blender__001\\AI48_001.blend",
+    "output_path": "E:\\evermotion\\Archinteriors Vol.48-3.6\\AI48_blender__001\\render",
+    "floor_object_names": [
+      "AI48_001_floor_1",
+      "AI48_001_floor_2",
+      "AI48_001_floor_3",
+      "AI48_001_floor_4",
+      "AI48_001_floor_black"
+    ],
+    "floor_object_name": "render_floor_full"
+  },
+  {
+    "scene_id": 11,
+    "scene_blend_path": "E:\\evermotion\\Archinteriors Vol.48-3.6\\AI48_blender__002\\AI48_002.blend",
+    "output_path": "E:\\evermotion\\Archinteriors Vol.48-3.6\\AI48_blender__002\\render",
+    "floor_object_names": [],
+    "floor_object_name": "AI48_002_floor"
+  },
+  {
+    "scene_id": 12,
+    "scene_blend_path": "E:\\evermotion\\Archinteriors Vol.48-3.6\\AI48_blender__003\\AI48_003.blend",
+    "output_path": "E:\\evermotion\\Archinteriors Vol.48-3.6\\AI48_blender__003\\render",
+    "floor_object_names": [
+      "AI48_003_Building_Floor",
+      "AI48_003_Floor"
+    ],
+    "floor_object_name": "render_floor_full"
+  },
+  {
+    "scene_id": 13,
+    "scene_blend_path": "E:\\evermotion\\Archinteriors Vol.48-3.6\\AI48_blender__004\\AI48_004.blend",
+    "output_path": "E:\\evermotion\\Archinteriors Vol.48-3.6\\AI48_blender__004\\render",
+    "floor_object_names": [],
+    "floor_object_name": "AI48_004_floor_planks"
+  },
+  {
+    "scene_id": 14,
+    "scene_blend_path": "E:\\evermotion\\Archinteriors Vol.48-3.6\\AI48_blender__005\\AI48_005.blend",
+    "output_path": "E:\\evermotion\\Archinteriors Vol.48-3.6\\AI48_blender__005\\render",
+    "floor_object_names": [
+      "AI48_005_floor_02_01",
+      "AI48_005_floor_obj_01",
+      "AI48_005_floor_obj_02",
+      "AI48_005_floor_obj_03",
+      "AI48_005_floor_obj_04",
+      "AI48_005_floor_obj_05",
+      "AI48_005_floor_obj_06",
+      "AI48_005_floor_obj_07",
+      "AI48_005_floor_obj_08",
+      "AI48_005_floor_obj_09",
+      "AI48_005_floor_obj_10",
+      "AI48_005_floor_obj_11",
+      "AI48_005_floor_obj_12",
+      "AI48_005_floor_obj_13",
+      "AI48_005_floor_obj_14",
+      "AI48_005_floor_obj_15",
+      "AI48_005_floor_obj_16",
+      "AI48_005_floor_obj_17",
+      "AI48_005_floor_obj_18",
+      "AI48_005_floor_obj_19",
+      "AI48_005_floor_obj_20",
+      "AI48_005_florr_outdor"
+    ],
+    "floor_object_name": "render_floor_full"
+  },
+  {
+    "scene_id": 15,
+    "scene_blend_path": "E:\\evermotion\\Archinteriors Vol.48-3.6\\AI48_blender__006\\AI48_006.blend",
+    "output_path": "E:\\evermotion\\Archinteriors Vol.48-3.6\\AI48_blender__006\\render",
+    "floor_object_names": [
+      "AI48_006_Floor_A_01",
+      "AI48_006_Floor_A_02",
+      "AI48_006_Floor_A_03"
+    ],
+    "floor_object_name": "render_floor_full"
+  },
+  {
+    "scene_id": 16,
+    "scene_blend_path": "E:\\evermotion\\Archinteriors Vol.48-3.6\\AI48_blender__007\\AI48_007.blend",
+    "output_path": "E:\\evermotion\\Archinteriors Vol.48-3.6\\AI48_blender__007\\render",
+    "floor_object_names": [
+      "AI48_007_woodfloor_01",
+      "AI48_007_woodfloor_02"
+    ],
+    "floor_object_name": "render_floor_full"
+  },
+  {
+    "scene_id": 17,
+    "scene_blend_path": "E:\\evermotion\\Archinteriors Vol.48-3.6\\AI48_blender__008\\AI48_008.blend",
+    "output_path": "E:\\evermotion\\Archinteriors Vol.48-3.6\\AI48_blender__008\\render",
+    "floor_object_names": [],
+    "floor_object_name": "AI48_008_312"
+  },
+  {
+    "scene_id": 18,
+    "scene_blend_path": "E:\\evermotion\\Archinteriors Vol.48-3.6\\AI48_blender__009\\AI48_009.blend",
+    "output_path": "E:\\evermotion\\Archinteriors Vol.48-3.6\\AI48_blender__009\\render",
+    "floor_object_names": [
+      "AI48_009_floor_planks",
+      "AI48_009_floor_planks_02",
+      "AI48_009_obj_007"
+    ],
+    "floor_object_name": "render_floor_full"
+  },
+  {
+    "scene_id": 19,
+    "scene_blend_path": "E:\\evermotion\\Archinteriors Vol.48-3.6\\AI48_blender__010\\AI48_010.blend",
+    "output_path": "E:\\evermotion\\Archinteriors Vol.48-3.6\\AI48_blender__010\\render",
+    "floor_object_names": [
+      "AI48_010_planks_floor001",
+      "Plane.001",
+      "AI48_010_carpet"
+    ],
+    "floor_object_name": "render_floor_full"
+  },
+  {
+    "scene_id": 20,
+    "scene_blend_path": "E:\\evermotion\\Archinteriors-Vol.58-3.6\\AI58_001\\AI58_001.blend",
+    "output_path": "E:\\evermotion\\Archinteriors-Vol.58-3.6\\AI58_001\\render",
+    "floor_object_names": [
+      "AI58_001_Floor",
+      "AI58_001_Floor_Base",
+      "AI58_001_floor_concrete_001"
+    ],
+    "floor_object_name": "render_floor_full"
+  },
+  {
+    "scene_id": 21,
+    "scene_blend_path": "E:\\evermotion\\Archinteriors-Vol.58-3.6\\AI58_002\\AI58_002.blend",
+    "output_path": "E:\\evermotion\\Archinteriors-Vol.58-3.6\\AI58_002\\render",
+    "floor_object_names": [
+      "AI58_002_Floor",
+      "AI58_002_Floor_Base"
+    ],
+    "floor_object_name": "render_floor_full"
+  },
+  {
+    "scene_id": 22,
+    "scene_blend_path": "E:\\evermotion\\Archinteriors-Vol.58-3.6\\AI58_003\\AI58_003.blend",
+    "output_path": "E:\\evermotion\\Archinteriors-Vol.58-3.6\\AI58_003\\render",
+    "floor_object_names": [],
+    "floor_object_name": "AI58_003_Building_002"
+  },
+  {
+    "scene_id": 23,
+    "scene_blend_path": "E:\\evermotion\\Archinteriors-Vol.58-3.6\\AI58_004\\AI58_004.blend",
+    "output_path": "E:\\evermotion\\Archinteriors-Vol.58-3.6\\AI58_004\\render",
+    "floor_object_names": [
+      "AI58_04_floor",
+      "AI_58_04_001",
+      "AI_58_04_001.1",
+      "AI_58_04_008.1",
+      "AI_58_04_008.2"
+    ],
+    "floor_object_name": "render_floor_full"
+  },
+  {
+    "scene_id": 24,
+    "scene_blend_path": "E:\\evermotion\\Archinteriors-Vol.58-3.6\\AI58_005\\AI58_005.blend",
+    "output_path": "E:\\evermotion\\Archinteriors-Vol.58-3.6\\AI58_005\\render",
+    "floor_object_names": [],
+    "floor_object_name": "AI58_05_floor_wood"
+  },
+  {
+    "scene_id": 25,
+    "scene_blend_path": "E:\\evermotion\\Archinteriors-Vol.58-3.6\\AI58_006\\AI58_006.blend",
+    "output_path": "E:\\evermotion\\Archinteriors-Vol.58-3.6\\AI58_006\\render",
+    "floor_object_names": [
+      "AI_58_06_142",
+      "AI_58_06_146",
+      "AI_58_10_terracota",
+      "AI_58_06_137"
+    ],
+    "floor_object_name": "render_floor_full"
+  },
+  {
+    "scene_id": 26,
+    "scene_blend_path": "E:\\evermotion\\Archinteriors-Vol.58-3.6\\AI58_007\\AI58_007.blend",
+    "output_path": "E:\\evermotion\\Archinteriors-Vol.58-3.6\\AI58_007\\render",
+    "floor_object_names": [
+      "AI58_07_floor",
+      "AI58_07_floorBase",
+      "AI58_07_Pavement_BIG_Out",
+      "AI58_07_Stone",
+      "AI58_07_Pavement_Out"
+    ],
+    "floor_object_name": "render_floor_full"
+  },
+  {
+    "scene_id": 27,
+    "scene_blend_path": "E:\\evermotion\\Archinteriors-Vol.58-3.6\\AI58_008\\AI58_008.blend",
+    "output_path": "E:\\evermotion\\Archinteriors-Vol.58-3.6\\AI58_008\\render",
+    "floor_object_names": [],
+    "floor_object_name": "AI58_008_Floor"
+  },
+  {
+    "scene_id": 28,
+    "scene_blend_path": "E:\\evermotion\\Archinteriors-Vol.58-3.6\\AI58_009\\AI58_009.blend",
+    "output_path": "E:\\evermotion\\Archinteriors-Vol.58-3.6\\AI58_009\\render",
+    "floor_object_names": [],
+    "floor_object_name": "AI58_009_Base_Floor"
+  },
+  {
+    "scene_id": 29,
+    "scene_blend_path": "E:\\evermotion\\Archinteriors-Vol.58-3.6\\AI58_010\\AI58_010.blend",
+    "output_path": "E:\\evermotion\\Archinteriors-Vol.58-3.6\\AI58_010\\render",
+    "floor_object_names": [
+      "AI58_10_336",
+      "AI_58_10_108",
+      "AI_58_10_terracota",
+      "AI58_10_52"
+    ],
+    "floor_object_name": "render_floor_full"
+  },
+  {
+    "scene_id": 114,
+    "scene_blend_path": "E:\\evermotion\\Archinteriors Vol.48-3.6\\AI48_blender__005\\AI48_005.blend",
+    "output_path": "E:\\evermotion\\Archinteriors Vol.48-3.6\\AI48_blender__005\\render",
+    "floor_object_names": [
+      "AI48_005_board_beam_01",
+      "AI48_005_board_beam_02",
+      "AI48_005_board_beam_03",
+      "AI48_005_board_beam_04",
+      "AI48_005_board_beam_05"
+    ],
+    "floor_object_name": "render_floor_full"
+  },
+  {
+    "scene_id": 116,
+    "scene_blend_path": "E:\\evermotion\\Archinteriors Vol.48-3.6\\AI48_blender__007\\AI48_007.blend",
+    "output_path": "E:\\evermotion\\Archinteriors Vol.48-3.6\\AI48_blender__007\\render",
+    "floor_object_names": [],
+    "floor_object_name": "AI48_007_attic_02"
+  },
+  {
+    "scene_id": 128,
+    "scene_blend_path": "E:\\evermotion\\Archinteriors-Vol.58-3.6\\AI58_009\\AI58_009.blend",
+    "output_path": "E:\\evermotion\\Archinteriors-Vol.58-3.6\\AI58_009\\render",
+    "floor_object_names": [
+      "AM212_002_concrete_steps_1",
+      "AM212_002_concrete_steps_2",
+      "AM212_002_concrete_tile_1",
+      "AM212_002_concrete_tile_2",
+      "AM212_002_concrete_tile_3",
+      "AM212_002_concrete_tile_4",
+      "AM212_002_concrete_tile_5",
+      "AM212_002_concrete_tile_6",
+      "AM212_002_concrete_tile_7",
+      "AM212_002_concrete_tile_8",
+      "AM212_002_concrete_tile_010",
+      "AM212_002_concrete_tile_011",
+      "AM212_002_concrete_tile_012",
+      "AM212_002_concrete_tile_013",
+      "AM212_002_concrete_tile_014",
+      "AM212_002_concrete_tile_015",
+      "AM212_002_concrete_tile_016",
+      "AM212_002_concrete_tile_017",
+      "AM212_002_deck",
+      "AM212_002_pebbles",
+      "AM212_002_soil",
+      "AM212_002_soil_bark",
+      "AM212_002_stones001",
+      "AM212_002_stones002",
+      "AM212_002_stones003"
+    ],
+    "floor_object_name": "render_floor_full"
+  },
+  {
+    "scene_id": 129,
+    "scene_blend_path": "E:\\evermotion\\Archinteriors-Vol.58-3.6\\AI58_010\\AI58_010.blend",
+    "output_path": "E:\\evermotion\\Archinteriors-Vol.58-3.6\\AI58_010\\render",
+    "floor_object_names": [
+      "AM212_004_gres_01",
+      "AM212_004_gres_02",
+      "AM212_004_gres_03",
+      "AM212_004_ground"
+    ],
+    "floor_object_name": "render_floor_full"
+  }
+]
