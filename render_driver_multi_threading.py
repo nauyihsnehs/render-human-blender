@@ -2,8 +2,6 @@
 # Defaults: scene.json + human.json in cwd, Blender on PATH, bpy script is the uploaded one.
 # Edit RUN_NUM / RUN_ID / THREAD_COUNT as needed, then:  python render_driver_multi_threading.py
 
-from __future__ import annotations
-
 import json
 import os
 import subprocess
@@ -11,22 +9,22 @@ from dataclasses import dataclass
 from threading import Thread
 from typing import Iterable
 
-SCENE_JSON = "scene.json"
+# SCENE_JSON = "scene.json"
+SCENE_JSON = "scene-failed.json"
 HUMAN_JSON = "human.json"
 INIT_SCRIPT = "init-setting-v1.1.py"
-BPY_SCRIPT = "render-script-v5-sample.py"
-BLENDER = os.environ.get("BLENDER_PATH", "blender")
-TASK_JSON = "task_sample.json"
+BPY_SCRIPT = "render-script-v5.1-sample.py"
+BLENDER = "/mnt/data2/ssy/blender-3.6.23-linux-x64/blender"
+TASK_JSON = "tasks_sampling.json"
 
-# choose ONE:
-RUN_NUM = [-1, 1]     # [num_scenes, num_humans], -1 = all
-RUN_ID = [29, 99]     # [scene_id, human_id], -1 = all (set e.g. [4,-1] to render scene 4 with all humans)
-
-THREAD_COUNT = int(os.environ.get("RENDER_THREAD_COUNT", "4"))
+RUN_NUM = [-1, -1]  # [num_scenes, num_humans], -1 = all
+RUN_ID = [-1, -1]  # [scene_id, human_id], -1 = all (set e.g. [4,-1] to render scene 4 with all humans)
 
 DRY_RUN = False
 PLAN_ONLY = False
 OVERWRITE_TASK_JSON = False
+
+THREAD_COUNT = 4
 
 # any extra keys you want to overwrite in the bpy script:
 EXTRA_OVERRIDES = {
@@ -65,10 +63,10 @@ def _normalize_items(items: list[dict], id_key: str, path_key: str) -> list[dict
 
 
 def _select_items(
-    scenes: list[dict],
-    humans: list[dict],
-    run_num: list[int],
-    run_id: list[int],
+        scenes: list[dict],
+        humans: list[dict],
+        run_num: list[int],
+        run_id: list[int],
 ) -> tuple[list[dict], list[dict]]:
     use_id = (run_id[0] != -1) or (run_id[1] != -1)
     if use_id:
@@ -193,9 +191,9 @@ def _run_task(task: RenderTask, scenes_by_id: dict[int, dict], humans_by_id: dic
 
 
 def _worker(
-    tasks: Iterable[RenderTask],
-    scenes_by_id: dict[int, dict],
-    humans_by_id: dict[int, dict],
+        tasks: Iterable[RenderTask],
+        scenes_by_id: dict[int, dict],
+        humans_by_id: dict[int, dict],
 ) -> None:
     for task in tasks:
         _run_task(task, scenes_by_id, humans_by_id)
