@@ -1,6 +1,6 @@
 # render_driver_playback_multi_gpu.py
 # Defaults: scene.json + human.json in cwd, Blender on PATH, bpy script is the uploaded one.
-# Edit RUN_NUM / RUN_ID as needed, then:  python render_driver_playback_multi_gpu.py
+# Edit RUN_NUM / RUN_ID / GPU_NUM as needed, then:  python render_driver_playback_multi_gpu.py
 
 from __future__ import annotations
 
@@ -26,6 +26,8 @@ RUN_ID = [29, 99]     # [scene_id, human_id], -1 = all (set e.g. [4,-1] to rende
 DRY_RUN = False
 PLAN_ONLY = False
 OVERWRITE_TASK_JSON = False
+
+GPU_NUM = -1  # max GPUs to use, -1 = all detected
 
 
 GPU_SELECT_SCRIPT = """\
@@ -65,8 +67,9 @@ else:
 
 @dataclass(frozen=True)
 class RenderTask:
-    scene: dict
-    human: dict
+    scene_id: int
+    human_id: int
+    gpu_id: int
 
 
 def _load_json(path: str) -> list[dict]:
@@ -153,20 +156,43 @@ def _gpu_ids_from_nvidia_smi() -> list[int]:
 def get_available_gpu_ids() -> list[int]:
     env_ids = _gpu_ids_from_env()
     if env_ids:
-        return env_ids
-    return _gpu_ids_from_nvidia_smi()
+        ids = env_ids
+    else:
+        ids = _gpu_ids_from_nvidia_smi()
+    if GPU_NUM != -1:
+        ids = ids[: max(0, int(GPU_NUM))]
+    return ids
 
 
-def build_tasks(scenes: list[dict], humans: list[dict]) -> list[RenderTask]:
+def get_gpu_ids() -> list[int]:
+    ids = get_available_gpu_ids()
+    if not ids:
+        raise RuntimeError("No GPUs detected. Ensure CUDA_VISIBLE_DEVICES or nvidia-smi is available.")
+    return ids
+
+
+def build_tasks(scenes: list[dict], humans: list[dict], gpu_ids: list[int]) -> list[RenderTask]:
     tasks = []
+    idx = 0
     for scene in scenes:
         for human in humans:
-            tasks.append(RenderTask(scene=scene, human=human))
+            gpu_id = gpu_ids[idx % len(gpu_ids)]
+            tasks.append(
+                RenderTask(
+                    scene_id=int(scene["scene_id"]),
+                    human_id=int(human["human_id"]),
+                    gpu_id=gpu_id,
+                )
+            )
+            idx += 1
     return tasks
 
 
 def write_task_plan(tasks: list[RenderTask], path: str) -> None:
-    payload = [{"scene": task.scene, "human": task.human} for task in tasks]
+    payload = [
+        {"scene_id": task.scene_id, "human_id": task.human_id, "gpu_id": task.gpu_id}
+        for task in tasks
+    ]
     with open(path, "w", encoding="utf-8") as handle:
         json.dump(payload, handle, indent=2)
 
@@ -178,23 +204,44 @@ def load_task_plan(path: str) -> list[RenderTask]:
         raise ValueError("Task plan must be a list of task entries.")
     tasks: list[RenderTask] = []
     for entry in data:
-        if not isinstance(entry, dict) or "scene" not in entry or "human" not in entry:
-            raise ValueError("Each task entry must include 'scene' and 'human' objects.")
-        tasks.append(RenderTask(scene=entry["scene"], human=entry["human"]))
+        if not isinstance(entry, dict):
+            raise ValueError("Each task entry must include scene_id, human_id, and gpu_id fields.")
+        if {"scene_id", "human_id", "gpu_id"} - set(entry.keys()):
+            raise ValueError("Each task entry must include scene_id, human_id, and gpu_id fields.")
+        tasks.append(
+            RenderTask(
+                scene_id=int(entry["scene_id"]),
+                human_id=int(entry["human_id"]),
+                gpu_id=int(entry["gpu_id"]),
+            )
+        )
     return tasks
 
 
-def distribute_tasks(tasks: list[RenderTask], gpu_ids: list[int]) -> dict[int, list[RenderTask]]:
-    assignments = {gpu_id: [] for gpu_id in gpu_ids}
-    for idx, task in enumerate(tasks):
-        gpu_id = gpu_ids[idx % len(gpu_ids)]
-        assignments[gpu_id].append(task)
+def _index_by_id(items: list[dict], id_key: str) -> dict[int, dict]:
+    return {int(item[id_key]): item for item in items}
+
+
+def _group_tasks_by_gpu(tasks: Iterable[RenderTask]) -> dict[int, list[RenderTask]]:
+    assignments: dict[int, list[RenderTask]] = {}
+    for task in tasks:
+        assignments.setdefault(task.gpu_id, []).append(task)
     return assignments
 
 
-def _run_task(task: RenderTask, gpu_id: int, gpu_script_path: str) -> None:
-    scene = task.scene
-    human = task.human
+def _run_task(
+    task: RenderTask,
+    scenes_by_id: dict[int, dict],
+    humans_by_id: dict[int, dict],
+    gpu_script_path: str,
+) -> None:
+    scene = scenes_by_id.get(task.scene_id)
+    human = humans_by_id.get(task.human_id)
+    if scene is None or human is None:
+        print(
+            f"[GPU {task.gpu_id}] [SKIP] Missing scene/human for scene={task.scene_id} human={task.human_id}"
+        )
+        return
 
     sid, hid = int(scene["scene_id"]), int(human["human_id"])
     out_base = scene.get("output_path") or scene.get("output_base_path") or "outputs"
@@ -202,7 +249,7 @@ def _run_task(task: RenderTask, gpu_id: int, gpu_script_path: str) -> None:
     meta_path = os.path.join(run_dir, "metadata.json")
 
     if not os.path.isfile(meta_path):
-        print(f"[GPU {gpu_id}] [SKIP] metadata.json not found: {meta_path}")
+        print(f"[GPU {task.gpu_id}] [SKIP] metadata.json not found: {meta_path}")
         return
 
     cmd = [
@@ -220,16 +267,21 @@ def _run_task(task: RenderTask, gpu_id: int, gpu_script_path: str) -> None:
     ]
 
     env = os.environ.copy()
-    env["RENDER_GPU_ID"] = str(gpu_id)
+    env["RENDER_GPU_ID"] = str(task.gpu_id)
 
-    print(f"[GPU {gpu_id}] scene={sid} human={hid} -> {run_dir}")
+    print(f"[GPU {task.gpu_id}] scene={sid} human={hid} -> {run_dir}")
     if not DRY_RUN:
         subprocess.run(cmd, env=env, check=False)
 
 
-def _worker(gpu_id: int, tasks: Iterable[RenderTask], gpu_script_path: str) -> None:
+def _worker(
+    tasks: Iterable[RenderTask],
+    scenes_by_id: dict[int, dict],
+    humans_by_id: dict[int, dict],
+    gpu_script_path: str,
+) -> None:
     for task in tasks:
-        _run_task(task, gpu_id, gpu_script_path)
+        _run_task(task, scenes_by_id, humans_by_id, gpu_script_path)
 
 
 def main() -> None:
@@ -239,7 +291,8 @@ def main() -> None:
     scenes, humans = _select_items(scenes, humans, RUN_NUM, RUN_ID)
 
     if PLAN_ONLY or OVERWRITE_TASK_JSON or not os.path.exists(TASK_JSON):
-        tasks = build_tasks(scenes, humans)
+        gpu_ids = get_gpu_ids()
+        tasks = build_tasks(scenes, humans, gpu_ids)
         if not tasks:
             print("No render tasks found.")
             return
@@ -253,18 +306,26 @@ def main() -> None:
         print("No render tasks found in task plan.")
         return
 
-    gpu_ids = get_available_gpu_ids()
-    if not gpu_ids:
-        raise RuntimeError("No GPUs detected. Ensure CUDA_VISIBLE_DEVICES or nvidia-smi is available.")
+    gpu_ids = get_gpu_ids()
 
     with tempfile.NamedTemporaryFile("w", suffix=".py", delete=False) as gpu_script:
         gpu_script.write(GPU_SELECT_SCRIPT)
         gpu_script_path = gpu_script.name
 
-    assignments = distribute_tasks(tasks, gpu_ids)
+    scenes_by_id = _index_by_id(scenes, "scene_id")
+    humans_by_id = _index_by_id(humans, "human_id")
+
+    assignments = _group_tasks_by_gpu(tasks)
     processes: list[Process] = []
-    for gpu_id, gpu_tasks in assignments.items():
-        proc = Process(target=_worker, args=(gpu_id, gpu_tasks, gpu_script_path))
+    for gpu_id in sorted(assignments.keys()):
+        if gpu_id not in gpu_ids:
+            print(f"[WARN] Skipping tasks for GPU {gpu_id}; not detected in available GPUs.")
+            continue
+        gpu_tasks = assignments[gpu_id]
+        proc = Process(
+            target=_worker,
+            args=(gpu_tasks, scenes_by_id, humans_by_id, gpu_script_path),
+        )
         proc.start()
         processes.append(proc)
 
