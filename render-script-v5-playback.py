@@ -309,6 +309,39 @@ def render_and_rename(run_dir, frame_idx, camera_id, light_id, write_data_once, 
 # Main
 # ============================================================
 
+def scene_unit_scale_length() -> float:
+    us = getattr(bpy.context.scene, 'unit_settings', None)
+    su = float(getattr(us, 'scale_length', 1.0) if us else 1.0)
+    return su if su > 0 else 1.0
+
+
+def scale_principled_subsurface_radius(obj, SU: float):
+    SU = float(SU if SU > 0 else 1.0)
+    if abs(SU - 1.0) < 1e-12:
+        return
+    mats = getattr(obj.data, 'materials', None)
+    for mat in mats:
+        if not mat or not getattr(mat, 'use_nodes', False) or not getattr(mat, 'node_tree', None):
+            continue
+        if mat.get('_PR_ssr_scaled_SU', None) == SU:
+            continue
+        nt = mat.node_tree
+        for node in nt.nodes:
+            if node.type != 'BSDF_PRINCIPLED':
+                continue
+            # Find the 'Subsurface Radius' socket (name can vary slightly across versions/locales).
+            sock = None
+            for inp in node.inputs:
+                if 'Subsurface Radius' in inp.name:
+                    sock = inp
+                    break
+            if sock is None or sock.is_linked:
+                continue
+            v = sock.default_value
+            sock.default_value = (float(v[0]) / SU, float(v[1]) / SU, float(v[2]) / SU)
+        mat['_PR_ssr_scaled_SU'] = SU
+
+
 def main():
     meta_path = parse_metadata_path_from_argv()
     meta = load_json(meta_path)
@@ -335,9 +368,11 @@ def main():
         except Exception:
             pass
 
+    SU = scene_unit_scale_length()
     s_people = float(meta.get("S_people", 1.0))
     people_obj.scale = (s_people, s_people, s_people)
     people_obj.rotation_mode = "QUATERNION"
+    scale_principled_subsurface_radius(people_obj, SU)
 
     cameras = meta.get("cameras", [])
     cam_name = cameras[0].get("camera_name", "Camera") if cameras else "Camera"
