@@ -1,10 +1,12 @@
 # render-script-v6-playback.py
+# Relight workflow uses playback only; v6 sampling is not required.
 # Run:
-#   blender your_scene.blend --python render-script-v6-playback.py -- /path/to/metadata.json
+#   blender your_scene.blend --python render-script-v6-playback.py -- /path/to/metadata.json [pos_limit] [light_limit]
 
 import bpy
 import json
 import os
+import random
 import sys
 from mathutils import Matrix
 
@@ -19,7 +21,25 @@ def parse_metadata_path_from_argv(default_path: str | None = None) -> str:
         return default_path
     blend_dir = os.path.dirname(bpy.data.filepath) if bpy.data.filepath else ""
     return os.path.join(blend_dir, "metadata.json")
-
+def parse_limits_from_argv() -> tuple[int | None, int | None]:
+    argv = sys.argv
+    if "--" not in argv:
+        return None, None
+    i = argv.index("--") + 1
+    args = argv[i + 1:]
+    pos_limit = None
+    light_limit = None
+    if len(args) >= 1:
+        try:
+            pos_limit = int(args[0])
+        except Exception:
+            pos_limit = None
+    if len(args) >= 2:
+        try:
+            light_limit = int(args[1])
+        except Exception:
+            light_limit = None
+    return pos_limit, light_limit
 
 def load_json(path: str) -> dict:
     path = bpy.path.abspath(path)
@@ -142,6 +162,38 @@ def apply_original_lighting_scale(state: dict, scale: float):
             continue
         sock.default_value = float(rec.get("strength", 0.0)) * s
 
+def weighted_choice(rng: random.Random, values: list[float], weights: list[float]) -> float:
+    total = float(sum(weights))
+    if total <= 0:
+        return float(values[0])
+    r = rng.uniform(0.0, total)
+    acc = 0.0
+    for value, weight in zip(values, weights):
+        acc += float(weight)
+        if r <= acc:
+            return float(value)
+    return float(values[-1])
+
+
+def filter_renders_by_limits(renders: list[dict], pos_limit: int | None, light_limit: int | None) -> list[dict]:
+    if pos_limit is None and light_limit is None:
+        return list(renders)
+
+    selected = []
+    seen_positions = []
+    for render_rec in renders:
+        pos_id = int(render_rec.get("pos_id", -1))
+        if pos_limit is not None:
+            if pos_id not in seen_positions:
+                seen_positions.append(pos_id)
+            if len(seen_positions) > pos_limit:
+                continue
+        if light_limit is not None:
+            light_id = int(render_rec.get("light_id", -1))
+            if light_id != 999 and light_id >= light_limit:
+                continue
+        selected.append(render_rec)
+    return selected
 
 def append_people_one_object(blend_path: str, object_name: str = ""):
     blend_path = bpy.path.abspath(blend_path)
@@ -459,6 +511,7 @@ def scale_principled_subsurface_radius(obj, SU: float):
 def main():
     meta_path = parse_metadata_path_from_argv()
     meta = load_json(meta_path)
+    pos_limit, light_limit = parse_limits_from_argv()
 
     renders = list(meta.get("renders", []))
     if not renders:
@@ -497,7 +550,6 @@ def main():
 
     light_obj = ensure_disk_area_light()
     light_obj.rotation_mode = "QUATERNION"
-    original_lighting_scale = clamp01(float(meta.get("original_lighting_scale", 1.0)))
     original_lighting_state = collect_original_lighting_state(
         exclude_light_names={light_obj.name}
     )
@@ -509,6 +561,11 @@ def main():
     ensure_compositor_nodes(int(meta.get("human_pass_index", 999)), meta.get("rgb_format", "PNG"))
 
     scene = bpy.context.scene
+
+    renders = filter_renders_by_limits(renders, pos_limit, light_limit)
+    if not renders:
+        raise RuntimeError("No renders selected after applying pos/light limits.")
+
     frame_max = max(int(r.get("frame", 0)) for r in renders)
     scene.frame_start = 0
     scene.frame_end = max(0, frame_max)
@@ -524,7 +581,36 @@ def main():
         if "camera_id" in c
     }
 
+    relight_meta = dict(meta)
+    relight_meta["renders"] = []
+    relight_meta["relight_config"] = {
+        "pos_limit": pos_limit,
+        "light_limit": light_limit,
+        "scale_values": [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9],
+        "scale_weights": [30, 20, 10, 10, 8, 6, 6, 4, 4, 2],
+    }
+
+    relight_meta_path = os.path.join(run_dir, "metadata-relight.json")
+
+    rng = random.Random()
+
+    scale_values = relight_meta["relight_config"]["scale_values"]
+    scale_weights = relight_meta["relight_config"]["scale_weights"]
+
     for render_rec in renders:
+        mode = str(render_rec.get("mode", ""))
+        if mode == "no_light":
+            render_scale = 1.0
+        else:
+            render_scale = weighted_choice(rng, scale_values, scale_weights)
+        rec_copy = dict(render_rec)
+        rec_copy["original_lighting_scale"] = float(render_scale)
+        relight_meta["renders"].append(rec_copy)
+
+    with open(relight_meta_path, "w", encoding="utf-8") as f:
+        json.dump(relight_meta, f, indent=2, ensure_ascii=False)
+
+    for render_rec in relight_meta["renders"]:
         pos_id = int(render_rec.get("pos_id"))
         yaw_local = int(render_rec.get("yaw_local"))
         camera_id = int(render_rec.get("camera_id"))
@@ -549,11 +635,12 @@ def main():
             cam_target.location = people_origin
 
         mode = str(render_rec.get("mode", ""))
+        render_scale = float(render_rec.get("original_lighting_scale", 1.0))
         if mode == "no_light":
-            apply_original_lighting_scale(original_lighting_state, 1.0)
+            apply_original_lighting_scale(original_lighting_state, render_scale)
             light_obj.data.energy = 0.0
         else:
-            apply_original_lighting_scale(original_lighting_state, original_lighting_scale)
+            apply_original_lighting_scale(original_lighting_state, render_scale)
             light_rec = render_rec.get("light")
             if not isinstance(light_rec, dict):
                 raise RuntimeError(f"Missing light data for camera_id={camera_id} light_id={light_id}")
@@ -570,6 +657,7 @@ def main():
 
     print(f"[DONE] Output:  {run_dir}", flush=True)
     print(f"[DONE] Metadata: {meta_path}", flush=True)
+    print(f"[DONE] Relight metadata: {relight_meta_path}", flush=True)
 
 
 if __name__ == "__main__":

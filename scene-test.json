@@ -1,0 +1,22 @@
+[
+  {
+    "scene_id": 5,
+    "scene_blend_path": "E:\\evermotion\\Archexteriors Vol.38-3.6\\AE38_006_Blender\\AE38_006.blend",
+    "output_path": "E:\\evermotion\\Archexteriors Vol.38-3.6\\AE38_006_Blender\\render-test",
+    "floor_object_names": [
+      "AE38_006_floor_A",
+      "AE38_006_floor_B",
+      "AE38_006_ground_A",
+      "AE38_006_ground_B",
+      "AE38_006_puddles_A"
+    ],
+    "floor_object_name": "render_floor_full"
+  },
+  {
+    "scene_id": 24,
+    "scene_blend_path": "E:\\evermotion\\Archinteriors-Vol.58-3.6\\AI58_005\\AI58_005.blend",
+    "output_path": "E:\\evermotion\\Archinteriors-Vol.58-3.6\\AI58_005\\render-test",
+    "floor_object_names": [],
+    "floor_object_name": "AI58_05_floor_wood"
+  }
+]
